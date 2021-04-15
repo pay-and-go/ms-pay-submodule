@@ -18,23 +18,26 @@ public class PagoController {
     @Autowired
     private PagoRepository pagoRepository;
 
-    @GetMapping("/pago")
+    @GetMapping("/getPayments")
     public List<Pago> findAllPagos(){
         return pagoRepository.findAll();
     }
 
-    @GetMapping("/pago/{id}")
+    @GetMapping("/paymentById/{id}")
     public ResponseEntity<Pago> findPagoById(@PathVariable(value = "id") int pagoId) throws ResourceNotFoundException {
         Pago pago = pagoRepository.findById(pagoId).orElseThrow(() -> new ResourceNotFoundException("Payment not found for this id :: " + pagoId));
         return ResponseEntity.ok().body(pago);
     }
 
-    @PostMapping(value = "/pago")
+    @PostMapping(value = "/createPayment")
     public Pago savePago(@Validated @RequestBody Pago pago) {
+        long millis=System.currentTimeMillis();
+        pago.setCreated_at(new Date(millis));
+        pago.setUpdated_at(new Date(millis));
         return pagoRepository.save(pago);
     }
 
-    @PutMapping("/pago/{id}")
+    @PutMapping("/updatePayment/{id}")
     public ResponseEntity<Pago> updatePago( @PathVariable(value = "id") int pagoId, @RequestBody Pago pagoDetails) throws ResourceNotFoundException {
         Pago pago = pagoRepository.findById(pagoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment not found on :: "+ pagoId));
@@ -50,6 +53,4 @@ public class PagoController {
         final Pago updatedPago = pagoRepository.save(pago);
         return ResponseEntity.ok(updatedPago);
     }
-
-
 }
