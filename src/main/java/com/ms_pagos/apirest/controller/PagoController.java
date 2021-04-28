@@ -29,6 +29,11 @@ public class PagoController {
         return ResponseEntity.ok().body(pago);
     }
 
+    @GetMapping("/paymentsByPlaca/{placa}")
+    public List<Pago> findPagosByPlaca(@PathVariable(value = "placa") String placa) throws ResourceNotFoundException {
+        return pagoRepository.findByPlaca(placa);
+    }
+
     @PostMapping(value = "/createPayment")
     public Pago savePago(@Validated @RequestBody Pago pago) {
         long millis=System.currentTimeMillis();
