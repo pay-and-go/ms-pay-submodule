@@ -13,7 +13,7 @@ import java.sql.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pay_ms")
+@RequestMapping("/pay-ms")
 public class PagoController {
     @Autowired
     private PagoRepository pagoRepository;
